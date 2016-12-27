@@ -2,7 +2,7 @@ import bottle
 import gevent
 import locust
 import json
-from bottle import route, run, send_file
+from bottle import route, static_file
 from gevent import wsgi
 from stats import RequestStats
 
@@ -10,18 +10,22 @@ _locust = None
 _hatch_rate = 1
 _max = 1
 
+
 @route('/public/:filename')
-def static_file(filename):
-    send_file(filename, root='public')
+def send_static_file(filename):
+    return static_file(filename, root='public')
+
 
 @route('/')
 def index():
-    send_file('index.html', root='public')
+    return static_file('index.html', root='public')
+
 
 @route('/swarm')
 def start():
     locust.swarm(_locust, _hatch_rate, _max)
     return {'message': 'Swarming started'}
+
 
 @route('/stats/requests')
 def request_stats():

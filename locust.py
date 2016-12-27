@@ -40,5 +40,10 @@ def swarm(locust, hatch_rate=1, max=1):
 
 def prepare_swarm_from_web(locust, hatch_rate=1, max=1):
     web.start(locust, hatch_rate, max)
-    gevent.sleep(200000)
+    try:
+        gevent.sleep(100000)
+    except KeyboardInterrupt, e:
+        print ""
+        print "Exiting, bye.."
+        print ""
 
