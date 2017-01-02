@@ -51,12 +51,19 @@ def process_argu(website, hatch_max, max, method, data):
         if method == 'get':
             for i in range(0, 10):
                 c = HTTPClient('')
-                c.get('http://' + website)
+                c.get('http://' + website.replace(',', '/'), name=website.split(',')[0])
 
         elif method == 'post':
             for i in range(0, 10):
                 c = HttpBrowser('')
-                c.post('http://' + website, data)
+                key = []
+                value = []
+                data = data.split(';')
+                for v in data:
+                    key.append(v.split('=')[0])
+                    value.append(v.split('=')[1])
+                data = dict(zip(key, value))
+                c.post('http://' +  website.replace(',', '/'), data, name=website.split(',')[0])
 
     global _locust, _hatch_rate, _max
     _locust = website_user
