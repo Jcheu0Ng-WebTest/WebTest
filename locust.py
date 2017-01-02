@@ -8,23 +8,26 @@ from stats import RequestStats
 
 locusts = []
 
+
 def hatch(locust, hatch_rate, max):
     print "Hatching and swarming..."
     while True:
         for i in range(0, hatch_rate):
             if len(locusts) >= max:
-                print "All locusts hatched"
+                print "locusts beyond max value"
                 return
             new_locust = gevent.spawn(locust, 'Default name')
             new_locust.link(on_death)
             locusts.append(new_locust)
         gevent.sleep(1)
 
+
 def on_death(locust):
     locusts.remove(locust)
     if len(locusts) == 0:
-        print "All locusts dead"
- 
+        print "All locusts hatched"
+
+
 def print_stats():
     while True:
         print "%20s %7s %7s %7s %7s %7s" % ('Name', '# reqs', 'Avg', 'Min', 'Max', 'req/s')
@@ -32,6 +35,9 @@ def print_stats():
         for r in RequestStats.requests.itervalues():
             print r
         print ""
+        if len(locusts) == 0:
+            print "===============All locusts have tested=============="
+            return
         gevent.sleep(1)
 
 def swarm(locust, hatch_rate=1, max=1): 

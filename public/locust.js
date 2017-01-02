@@ -19,7 +19,7 @@ uki([
 
 uki('Button[text^=Start]').bind('click', function() {
     console.log('Swarming');
-    $.get('/swarm');
+    $.get('/swarm/www.qq.com/4/10/get/{"arg":"hello,world"}');
     updateStats();
 });
 

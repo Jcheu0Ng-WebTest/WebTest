@@ -46,6 +46,7 @@ class RequestStats(object):
 
     def reqs_per_sec(self):
         timestamp = int(time.time())
+        # reqs per 5 sec
         reqs = [self.num_reqs_per_sec.get(t, 0) for t in range(timestamp - 5, timestamp)]
         return avg(reqs)
 
